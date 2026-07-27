@@ -26,3 +26,4 @@ jobs:
       - backend
 
     uses: ./.github/workflows/docker-ci.yml
+    secrets: inherit
