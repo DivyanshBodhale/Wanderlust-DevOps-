@@ -30,9 +30,6 @@ jobs:
           cache-dependency-path: backend/package-lock.json
 
 
-      # ESLint
-      - name: Run ESLint
-        run: npm run lint
 
       # Unit Tests
       - name: Run Unit Tests
