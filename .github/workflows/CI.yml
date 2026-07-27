@@ -1,0 +1,24 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+        - master 
+        
+
+jobs:
+  frontend:
+    uses: ./.github/workflows/nodeSetup.yml
+    with:
+      working-directory: frontend
+
+  backend:
+    uses: ./.github/workflows/nodeSetup.yml
+    with:
+      working-directory: backend
+
+  docker:
+    needs:
+      - frontend
+      - backend
+    uses: ./.github/workflows/dockerCI.yml

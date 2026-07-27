@@ -1,0 +1,46 @@
+name: Node.js CI
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        description: "Project directory (frontend or backend)"
+        required: true
+        type: string
+      node-version:
+        description: "Node.js version"
+        required: false
+        default: "21"
+        type: string
+
+jobs:
+  node-ci:
+    name: Node.js CI
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: npm
+          cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run Unit Tests
+        run: npm test
+
+      - name: Build Application
+        run: npm run build 
