@@ -82,10 +82,13 @@
 
 ```bash
 terraform init
-
+```
+```bash 
 terraform validate
-
+```
+```
 terraform plan
-
+```
+```bash
 terraform apply
  ```
