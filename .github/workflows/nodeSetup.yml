@@ -1,17 +1,9 @@
 name: Node.js CI
 
 on:
-  workflow_call:
-    inputs:
-      working-directory:
-        description: "Project directory (frontend or backend)"
-        required: true
-        type: string
-      node-version:
-        description: "Node.js version"
-        required: false
-        default: "21"
-        type: string
+  push:
+    branches:
+      - main
 
 jobs:
   node-ci:
