@@ -78,4 +78,12 @@
    npm run dev
    ```
 
+## Terraform 
 
+terraform init
+
+terraform validate
+
+terraform plan
+
+terraform apply
