@@ -106,7 +106,7 @@ Project-Name/
 │       └── deploy.yml
 ```
 
- # Monitoring (Grafana)
+ ## Monitoring (Grafana)
 
  **Prometheus**
  <img width="1919" height="908" alt="Screenshot 2026-07-27 202930" src="https://github.com/user-attachments/assets/c9be3cb4-1598-42de-ab22-b9cb308a6a3b" />
