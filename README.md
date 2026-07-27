@@ -93,11 +93,23 @@ terraform plan
 terraform apply
  ```
 
+
+##File Structure (CICD)
+Project-Name/
+│
+├── .github/
+│   └── workflows/
+│       ├── ci.yml                 # Main CI workflow
+│       ├── frontend-ci.yml        # Frontend testing & build
+│       ├── backend-ci.yml         # Backend testing & build
+│       ├── docker-ci.yml          # Docker image build & push
+│       └── deploy.yml             # Deploy to AWS EC2
+
  #Monitoring (Grafana)
- ## Prometheus
+ **Prometheus**
  <img width="1919" height="908" alt="Screenshot 2026-07-27 202930" src="https://github.com/user-attachments/assets/c9be3cb4-1598-42de-ab22-b9cb308a6a3b" />
 
- ## Loki
+ **Loki**
  <img width="1919" height="925" alt="Screenshot 2026-07-27 204006" src="https://github.com/user-attachments/assets/b69046b5-6e68-4b04-bcc1-488e7f54a9d8" />
 
  
