@@ -1,10 +1,10 @@
 name: CI Pipeline
 
 on:
-  workflow_call:
-  #push:
-   # branches:
-    #    - master 
+  #workflow_call:
+  push:
+    branches:
+        - master 
         
 
 jobs:
@@ -18,8 +18,8 @@ jobs:
     with:
       working-directory: backend
 
-  docker:
-    needs:
-      - frontend
-      - backend
-    uses: ./.github/workflows/dockerCI.yml
+  #docker:
+   # needs:
+    #  - frontend
+     # - backend
+    #uses: ./.github/workflows/dockerCI.yml
