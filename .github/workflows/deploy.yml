@@ -8,10 +8,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: SSH into EC2 and Deploy
         uses: appleboy/ssh-action@v1.2.0
-
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
@@ -19,13 +17,39 @@ jobs:
           port: 22
 
           script: |
-            cd ~/Wanderlust-DevOps
+            set -e
 
-            echo "Pulling latest code..."
-            git pull origin main
+            PROJECT_DIR="/home/ubuntu/Wanderlust-DevOps"
+
+            # Install Git if missing
+            if ! command -v git >/dev/null 2>&1; then
+              sudo apt update
+              sudo apt install -y git
+            fi
+
+            # Install Docker if missing
+            if ! command -v docker >/dev/null 2>&1; then
+              sudo apt update
+              sudo apt install -y docker.io docker-compose-v2
+              sudo systemctl enable docker
+              sudo systemctl start docker
+              sudo usermod -aG docker ubuntu
+            fi
+
+            # Clone repository if it doesn't exist
+            if [ ! -d "$PROJECT_DIR/.git" ]; then
+              echo "Repository not found. Cloning..."
+              git clone https://github.com/DivyanshBodhale/Wanderlust-DevOps-.git "$PROJECT_DIR"
+            fi
+
+            cd "$PROJECT_DIR"
+
+            echo "Updating repository..."
+            git fetch origin
+            git reset --hard origin/main
 
             echo "Stopping old containers..."
-            docker compose down
+            docker compose down || true
 
             echo "Building and starting containers..."
             docker compose up --build -d
@@ -33,4 +57,4 @@ jobs:
             echo "Removing unused Docker images..."
             docker image prune -f
 
-            echo "Deployment completed successfully." 
+            echo "Deployment completed successfully."
