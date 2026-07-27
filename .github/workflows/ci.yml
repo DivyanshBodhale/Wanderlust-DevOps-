@@ -10,6 +10,7 @@ on:
   pull_request:
     branches:
       - main
+      - master 
 
 jobs:
 
@@ -24,4 +25,4 @@ jobs:
       - frontend
       - backend
 
-    uses: ./.github/workflows/docker.yml
+    uses: ./.github/workflows/docker-ci.yml
