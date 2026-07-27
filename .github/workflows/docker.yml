@@ -1,40 +1,84 @@
-name: Docker Build
+name: Docker CI
 
 on:
-  workflow_call:
+    push:
+      branches:
+        - main
+
+
+  # workflow_call:
 
 jobs:
   docker:
-
+    name: Build & Push Docker Images
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: read
-      packages: write
-
     steps:
+      # Checkout Repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - uses: actions/checkout@v4
-
-      - name: Login to GHCR
+      # Login to Docker Hub
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Backend
-        run: |
-          docker build -t ghcr.io/${{ github.repository }}/backend:latest ./backend
+      # Build Frontend Image
+      - name: Build Frontend Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: false
+          tags: ${{ secrets.DOCKER_USERNAME }}/wanderlust-frontend:latest
 
-      - name: Build Frontend
-        run: |
-          docker build -t ghcr.io/${{ github.repository }}/frontend:latest ./frontend
+      # Build Backend Image
+      - name: Build Backend Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: false
+          tags: ${{ secrets.DOCKER_USERNAME }}/wanderlust-backend:latest
 
-      - name: Push Backend
-        run: |
-          docker push ghcr.io/${{ github.repository }}/backend:latest
+      # Trivy Scan - Frontend
+      - name: Trivy Scan Frontend Image
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ secrets.DOCKER_USERNAME }}/wanderlust-frontend:latest
+          format: table
+          exit-code: 0
+          ignore-unfixed: true
+          vuln-type: os,library
+          severity: CRITICAL,HIGH
 
-      - name: Push Frontend
-        run: |
-          docker push ghcr.io/${{ github.repository }}/frontend:latest
+      # Trivy Scan - Backend
+      - name: Trivy Scan Backend Image
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ secrets.DOCKER_USERNAME }}/wanderlust-backend:latest
+          format: table
+          exit-code: 0
+          ignore-unfixed: true
+          vuln-type: os,library
+          severity: CRITICAL,HIGH
+
+      # Push Frontend Image
+      - name: Push Frontend Image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/wanderlust-frontend:latest
+
+      # Push Backend Image
+      - name: Push Backend Image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/wanderlust-backend:latest
