@@ -95,15 +95,16 @@ terraform apply
 
 
 ##File Structure (CICD)
+```text
 Project-Name/
-│
 ├── .github/
 │   └── workflows/
-│       ├── ci.yml                 # Main CI workflow
-│       ├── frontend-ci.yml        # Frontend testing & build
-│       ├── backend-ci.yml         # Backend testing & build
-│       ├── docker-ci.yml          # Docker image build & push
-│       └── deploy.yml             # Deploy to AWS EC2
+│       ├── ci.yml
+│       ├── frontend-ci.yml
+│       ├── backend-ci.yml
+│       ├── docker-ci.yml
+│       └── deploy.yml
+```
 
  #Monitoring (Grafana)
  **Prometheus**
