@@ -80,6 +80,7 @@
 
 ## Terraform 
 
+```bash
 terraform init
 
 terraform validate
@@ -87,3 +88,4 @@ terraform validate
 terraform plan
 
 terraform apply
+ ```
