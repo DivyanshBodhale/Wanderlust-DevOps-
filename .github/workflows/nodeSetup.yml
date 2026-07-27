@@ -5,6 +5,18 @@ on:
     branches:
       - main
 
+  workflow_call:
+    inputs:
+      working-directory:
+        description: "Project directory (frontend or backend)"
+        required: true
+        type: string
+      node-version:
+        description: "Node.js version"
+        required: false
+        default: "21"
+        type: string
+
 jobs:
   node-ci:
     name: Node.js CI
@@ -35,4 +47,5 @@ jobs:
         run: npm test
 
       - name: Build Application
-        run: npm run build 
+        run: npm run build
+        
