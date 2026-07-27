@@ -49,7 +49,7 @@ jobs:
 
             echo "Updating repository..."
             git fetch origin
-            git reset --hard origin/main
+            git reset --hard origin/master 
 
             echo "Stopping old containers..."
             docker compose down || true
